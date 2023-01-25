@@ -1,0 +1,125 @@
+package com.example.baeldunginheritance.controller;
+
+import com.example.baeldunginheritance.DTO.UserCreationDTO;
+import com.example.baeldunginheritance.DTO.UserDTO;
+import com.example.baeldunginheritance.collection.Mapper;
+import com.example.baeldunginheritance.collection.User;
+import com.example.baeldunginheritance.collection.VerificationToken;
+import com.example.baeldunginheritance.event.RegistrationCompleteEvent;
+import com.example.baeldunginheritance.event.ResendVerificationTokenEvent;
+import com.example.baeldunginheritance.repository.VerificationTokenRepository;
+import com.example.baeldunginheritance.service.UserService;
+import com.example.baeldunginheritance.service.VerificationTokenService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    private final Mapper mapper;
+
+    private final VerificationTokenService verificationTokenService;
+    private final UserService userService;
+
+    private final ApplicationEventPublisher publisher;
+
+    public UserController(Mapper mapper, VerificationTokenService verificationTokenService, UserService userService, ApplicationEventPublisher publisher) {
+        this.mapper = mapper;
+        this.verificationTokenService = verificationTokenService;
+        this.userService = userService;
+        this.publisher = publisher;
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<UserDTO> getUsers() {
+        return userService.getUsers();
+    }
+
+    @PostMapping("/register/student")
+    @ResponseBody
+    public User saveStudent(@RequestBody UserCreationDTO userCreationDTO,final HttpServletRequest httpServletRequest) {
+        User student=mapper.toStudentUser(userCreationDTO);
+        publisher.publishEvent(new RegistrationCompleteEvent(
+                student,
+                applicationUrl(httpServletRequest)
+        ));
+        return userService.saveStudent(userCreationDTO);
+    }
+
+    @PostMapping("/register/teacher")
+    @ResponseBody
+    public User saveTeacher(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
+        User teacher=mapper.toTeacherUser(userCreationDTO);
+        publisher.publishEvent(new RegistrationCompleteEvent(
+                teacher,
+                applicationUrl(httpServletRequest)
+        ));
+        return userService.saveTeacher(userCreationDTO);
+    }
+
+    private String applicationUrl(HttpServletRequest httpServletRequest) {
+        return "http://" + httpServletRequest.getServerName()+ ":"
+                + httpServletRequest.getServerPort()+"/user/" + httpServletRequest.getContextPath();
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        userService.delete(id);
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/verifyRegistration")
+    public String verifyRegistration(@RequestParam("token") String token) {
+        String result = userService.validateVerificationToken(token);
+        System.out.println("result is: "+result);
+        if(result.toLowerCase().contains("valid")) {
+            return "User verified successfully";
+        } else {
+            return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
+        }
+    }
+
+    @GetMapping("/resendToken")
+    public String resendVerificationToken(@RequestParam("token") String oldToken,HttpServletRequest httpServletRequest) {
+//        String result = userService.validateVerificationToken(oldToken);
+        VerificationToken verificationToken=verificationTokenService.findByToken(oldToken);
+        User user=verificationToken.getUser();
+        publisher.publishEvent(new ResendVerificationTokenEvent(
+                user,
+                applicationUrl(httpServletRequest)
+        ));
+//        if(result.toLowerCase().contains("valid")) {
+//            return "User verified successfully with the resent token";
+//        } else {
+//            return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
+//        }
+        return "Mail sent";
+    }
+    @GetMapping("/verifyResend")
+    public String verifyResentToken(@RequestParam("token") String token) {
+        String result = userService.validateVerificationToken(token);
+        System.out.println("result is: "+result);
+        if(result.toLowerCase().contains("valid")) {
+            return "User verified successfully with the resent token";
+        } else {
+            return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
+        }
+    }
+
+
+    @DeleteMapping
+    public void deleteAllUsers() {
+        userService.deleteAllUsers();
+    }
+
+    @DeleteMapping("/token")
+    public void deleteAllTokens() {
+        verificationTokenService.deleteAllTokens();
+    }
+}

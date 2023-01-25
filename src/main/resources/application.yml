@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      database: baeldungTut
+      port: 27017
+      host: localhost
+      auto-index-creation: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: raresamza@gmail.com
+    password: agieenylsnyyuasw
+    port: '587'
