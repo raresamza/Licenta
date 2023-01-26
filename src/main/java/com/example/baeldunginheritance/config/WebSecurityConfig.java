@@ -22,15 +22,10 @@ public class WebSecurityConfig {
             "/user/verifyRegistration",
             "/user/token",
             "/user/resendToken",
-            "user/verifyResend"
-    };
-    private static final String[] WHITE_LIST_URLS2={
-            "/user",
-            "/user/register/student",
-            "/user/register/teacher",
-            "/teacher",
-            "/student",
-            "/user/verifyRegistration?token"
+            "user/verifyResend",
+            "/user/resetPassword",
+            "/user/savePassword",
+            "/user/changePassword"
     };
 
     @Bean

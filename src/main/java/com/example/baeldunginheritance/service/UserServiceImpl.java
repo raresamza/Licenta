@@ -1,37 +1,40 @@
 package com.example.baeldunginheritance.service;
 
 
-import com.example.baeldunginheritance.DTO.TeacherDTO;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.Utils.Role;
-import com.example.baeldunginheritance.collection.Mapper;
-import com.example.baeldunginheritance.collection.Teacher;
-import com.example.baeldunginheritance.collection.User;
-import com.example.baeldunginheritance.collection.VerificationToken;
+import com.example.baeldunginheritance.collection.*;
+import com.example.baeldunginheritance.repository.PasswordResetTokenRepository;
 import com.example.baeldunginheritance.repository.UserRepository;
 import com.example.baeldunginheritance.repository.VerificationTokenRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
+
+    private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
     private final VerificationTokenRepository verificationTokenRepository;
 
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
     private final Mapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository, Mapper mapper, VerificationTokenRepository verificationTokenRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, Mapper mapper, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Override
@@ -96,6 +99,51 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteAllUsers() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken passwordResetToken=new PasswordResetToken(token,user);
+        passwordResetTokenRepository.insert(passwordResetToken);
+    }
+
+    @Override
+    public String validatePasswordResetToken(String token) {
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
+
+        if(passwordResetToken==null) {
+            return "Invalid token";
+        }
+
+        User user=passwordResetToken.getUser();
+        Calendar calendar=Calendar.getInstance();
+        if(passwordResetToken.getExpirationTime().getTime()-calendar.getTime().getTime()<=0) {
+            passwordResetTokenRepository.delete(passwordResetToken);
+            return "Token expired";
+        }
+
+        return "Valid token";
+    }
+
+    @Override
+    public Optional<User> getUserByPasswordResetToken(String token) {
+        return Optional.ofNullable(passwordResetTokenRepository.findByToken(token).getUser());
+    }
+
+    @Override
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(User user, String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
 //    @Override

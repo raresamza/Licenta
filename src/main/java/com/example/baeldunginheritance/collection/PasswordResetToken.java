@@ -10,12 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Calendar;
 import java.util.Date;
 
-@Document(collection="token")
+
+@Document(collection="tokenReset")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class VerificationToken {
+public class PasswordResetToken {
 
     @Id
     private String id;
@@ -27,14 +28,14 @@ public class VerificationToken {
 
     private User user;
 
-    public VerificationToken(String token, User user) {
+    public PasswordResetToken(String token, User user) {
         super();
         this.token = token;
         this.user = user;
         this.expirationTime = calculateExpirationTime(EXP_TIME);
     }
 
-    public VerificationToken(String token) {
+    public PasswordResetToken(String token) {
         super();
         this.token = token;
         this.expirationTime = calculateExpirationTime(EXP_TIME);

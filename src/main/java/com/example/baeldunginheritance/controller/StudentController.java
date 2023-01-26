@@ -5,9 +5,7 @@ import com.example.baeldunginheritance.DTO.StudentCreationDTO;
 import com.example.baeldunginheritance.DTO.StudentDTO;
 import com.example.baeldunginheritance.collection.Mapper;
 import com.example.baeldunginheritance.collection.Student;
-import com.example.baeldunginheritance.event.RegistrationCompleteEvent;
 import com.example.baeldunginheritance.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 

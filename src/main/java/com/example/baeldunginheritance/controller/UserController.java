@@ -1,13 +1,14 @@
 package com.example.baeldunginheritance.controller;
 
+import com.example.baeldunginheritance.DTO.PasswordModel;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.collection.Mapper;
 import com.example.baeldunginheritance.collection.User;
 import com.example.baeldunginheritance.collection.VerificationToken;
+import com.example.baeldunginheritance.event.PasswordRestEvent;
 import com.example.baeldunginheritance.event.RegistrationCompleteEvent;
 import com.example.baeldunginheritance.event.ResendVerificationTokenEvent;
-import com.example.baeldunginheritance.repository.VerificationTokenRepository;
 import com.example.baeldunginheritance.service.UserService;
 import com.example.baeldunginheritance.service.VerificationTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -42,8 +45,8 @@ public class UserController {
 
     @PostMapping("/register/student")
     @ResponseBody
-    public User saveStudent(@RequestBody UserCreationDTO userCreationDTO,final HttpServletRequest httpServletRequest) {
-        User student=mapper.toStudentUser(userCreationDTO);
+    public User saveStudent(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
+        User student = mapper.toStudentUser(userCreationDTO);
         publisher.publishEvent(new RegistrationCompleteEvent(
                 student,
                 applicationUrl(httpServletRequest)
@@ -54,7 +57,7 @@ public class UserController {
     @PostMapping("/register/teacher")
     @ResponseBody
     public User saveTeacher(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
-        User teacher=mapper.toTeacherUser(userCreationDTO);
+        User teacher = mapper.toTeacherUser(userCreationDTO);
         publisher.publishEvent(new RegistrationCompleteEvent(
                 teacher,
                 applicationUrl(httpServletRequest)
@@ -63,8 +66,8 @@ public class UserController {
     }
 
     private String applicationUrl(HttpServletRequest httpServletRequest) {
-        return "http://" + httpServletRequest.getServerName()+ ":"
-                + httpServletRequest.getServerPort()+"/user/" + httpServletRequest.getContextPath();
+        return "http://" + httpServletRequest.getServerName() + ":"
+                + httpServletRequest.getServerPort() + "/user/" + httpServletRequest.getContextPath();
     }
 
     @DeleteMapping("/{id}")
@@ -77,8 +80,8 @@ public class UserController {
     @GetMapping("/verifyRegistration")
     public String verifyRegistration(@RequestParam("token") String token) {
         String result = userService.validateVerificationToken(token);
-        System.out.println("result is: "+result);
-        if(result.toLowerCase().contains("valid")) {
+        System.out.println("result is: " + result);
+        if (result.toLowerCase().contains("valid")) {
             return "User verified successfully";
         } else {
             return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
@@ -86,31 +89,66 @@ public class UserController {
     }
 
     @GetMapping("/resendToken")
-    public String resendVerificationToken(@RequestParam("token") String oldToken,HttpServletRequest httpServletRequest) {
+    public String resendVerificationToken(@RequestParam("token") String oldToken, HttpServletRequest httpServletRequest) {
 //        String result = userService.validateVerificationToken(oldToken);
-        VerificationToken verificationToken=verificationTokenService.findByToken(oldToken);
-        User user=verificationToken.getUser();
+        VerificationToken verificationToken = verificationTokenService.findByToken(oldToken);
+        User user = verificationToken.getUser();
         publisher.publishEvent(new ResendVerificationTokenEvent(
                 user,
                 applicationUrl(httpServletRequest)
         ));
-//        if(result.toLowerCase().contains("valid")) {
-//            return "User verified successfully with the resent token";
-//        } else {
-//            return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
-//        }
-        return "Mail sent";
+        return "Mail re-sent";
     }
+
+
     @GetMapping("/verifyResend")
     public String verifyResentToken(@RequestParam("token") String token) {
         String result = userService.validateVerificationToken(token);
-        System.out.println("result is: "+result);
-        if(result.toLowerCase().contains("valid")) {
+        System.out.println("result is: " + result);
+        if (result.toLowerCase().contains("valid")) {
             return "User verified successfully with the resent token";
         } else {
             return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
         }
     }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest httpServletRequest) {
+        User user = userService.findUserByEmail(passwordModel.getEmail());
+        publisher.publishEvent(new PasswordRestEvent(
+                user,
+                applicationUrl(httpServletRequest)
+        ));
+        return "Mail sent for password reset!";
+    }
+
+    @PostMapping("/savePassword")
+    public String savePassword(@RequestParam("token") String token, @RequestBody PasswordModel passwordModel) {
+        String result = userService.validatePasswordResetToken(token);
+        if (!result.toLowerCase().contains("valid")) {
+            return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
+        }
+        Optional<User> user = userService.getUserByPasswordResetToken(token);
+        if (user.isPresent()) {
+            userService.changePassword(user.get(), passwordModel.getNewPassword());
+            return "Password reset Successfuly";
+        } else {
+            return "Bad user";
+        }
+    }
+
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestBody PasswordModel passwordModel) {
+        User user = userService.findUserByEmail(passwordModel.getEmail());
+        if(!userService.checkIfValidOldPassword(user,passwordModel.getOldPassword())) {
+            return "Invalid old password";
+        }
+
+        userService.changePassword(user,passwordModel.getNewPassword());
+        return "Password changed successfully";
+    }
+
 
 
     @DeleteMapping
