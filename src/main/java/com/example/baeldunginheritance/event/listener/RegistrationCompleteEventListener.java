@@ -48,8 +48,11 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
     private void sendMail(User user,String url) throws MessagingException {
         MimeMessage message=javaMailSender.createMimeMessage();
 
-        String text="<h1>You're almost done! \n</h1>" +
-                "<p>Hello, dear "+user.getFirstName()+" "+user.getLastName()+"\n</p> " +
+        String style="<style> .random {color:red}</style>";
+
+
+        String text=style + "<h1>You're almost done! \n</h1>" +
+                "<p class='random'>Hello, dear "+user.getFirstName()+" "+user.getLastName()+"\n</p> " +
                 "<p>This is your activation link:\n</p> " +
                 url+" \n" +
                 "<p>Please click the link to activate the account in the span of <span style=\"color:red;\">10</span>" +

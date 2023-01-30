@@ -3,7 +3,7 @@ spring:
     mongodb:
       database: baeldungTut
       port: 27017
-      host: localhost
+      host: 164.90.185.151
       auto-index-creation: true
   mvc:
     pathmatch:

@@ -25,7 +25,9 @@ public class WebSecurityConfig {
             "user/verifyResend",
             "/user/resetPassword",
             "/user/savePassword",
-            "/user/changePassword"
+            "/user/changePassword",
+            "164.90.185.151/user",
+            "164.90.185.151/student"
     };
 
     @Bean
