@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://164.90.185.151:8080")
 @RequestMapping("/user")
 public class UserController {
 
