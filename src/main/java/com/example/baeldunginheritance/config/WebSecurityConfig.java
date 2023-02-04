@@ -27,7 +27,8 @@ public class WebSecurityConfig {
             "/user/savePassword",
             "/user/changePassword",
             "164.90.185.151/user",
-            "164.90.185.151/student"
+            "164.90.185.151/student",
+            "https://licenta-production.up.railway.app/user"
     };
 
     @Bean
