@@ -3,8 +3,9 @@ spring:
     mongodb:
       database: baeldungTut
       port: 27017
-      host: 164.90.185.151
+      host: localhost
       auto-index-creation: true
+      uri: mongodb+srv://raresamza:zugravul70@cluster0.skzk4zl.mongodb.net/?retryWrites=true&w=majority
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
