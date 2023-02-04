@@ -22,4 +22,4 @@ spring:
     password: agieenylsnyyuasw
     port: '587'
 server:
-  port: 0.0.0.0:${PORT}
+  address: 0.0.0.0
