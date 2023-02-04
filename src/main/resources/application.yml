@@ -21,3 +21,5 @@ spring:
     username: raresamza@gmail.com
     password: agieenylsnyyuasw
     port: '587'
+server:
+  port: 0.0.0.0:${PORT}
