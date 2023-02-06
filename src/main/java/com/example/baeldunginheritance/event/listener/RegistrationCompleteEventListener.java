@@ -35,8 +35,10 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         userService.saveVerificationTokenForUser(token,user);
         String url=event.getApplicationUrl()+"verifyRegistration?token="+token;
         log.info("Click to verify your account: {}",url);
+        String newUrl="https://licenta-production.up.railway.app/user/"+"verifyRegistration?token="+token;
+        log.info("Or click to verify your account: {}",newUrl);
         try {
-            sendMail(user,url);
+            sendMail(user,newUrl);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
