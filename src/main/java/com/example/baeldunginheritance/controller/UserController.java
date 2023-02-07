@@ -23,7 +23,8 @@ import java.util.UUID;
 @CrossOrigin(origins = {"http://164.90.185.151:27017",
                         "http://localhost:3000/",
                         "http://localhost:3000/sign-up/teacher",
-                        "https://frontend-final.herokuapp.com/sign-up/teacher"})
+                        "https://frontend-final.herokuapp.com/sign-up/teacher",
+                        "https://frontent-final.herokuapp.com"})
 
 
 @RequestMapping("/user")
