@@ -26,7 +26,7 @@ import java.util.UUID;
                         "https://frontend-final.herokuapp.com/sign-up/teacher",
                         "https://frontent-final.herokuapp.com",
                         "https://sssssss.herokuapp.com/sign-up/teacher",
-                        "https://sssssss.herokuapp.com/"})
+                        "https://sssssss.herokuapp.com"})
 
 
 @RequestMapping("/user")
