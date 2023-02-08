@@ -26,7 +26,7 @@ import java.util.UUID;
 //                        "http://localhost:3000/sign-up/teacher",
 //                        "https://sssssss.herokuapp.com/sign-up/teacher"})
 
-@CrossOrigin(origins = "", allowedHeaders = "")
+@CrossOrigin(origins = "https://sssssss.herokuapp.com", allowedHeaders = "https://sssssss.herokuapp.com/sign-up/teacher")
 @RequestMapping("/user")
 public class UserController {
 
