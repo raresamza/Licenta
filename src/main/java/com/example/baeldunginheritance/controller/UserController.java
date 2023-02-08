@@ -20,12 +20,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = {"http://164.90.185.151:27017",
+@CrossOrigin(origins = {"https://sssssss.herokuapp.com",
                         "http://localhost:3000/",
                         "https://sssssss.herokuapp.com/",
                         "http://localhost:3000/sign-up/teacher",
-                        "https://sssssss.herokuapp.com/sign-up/teacher",
-                        "https://sssssss.herokuapp.com"})
+                        "https://sssssss.herokuapp.com/sign-up/teacher"})
 
 
 @RequestMapping("/user")
