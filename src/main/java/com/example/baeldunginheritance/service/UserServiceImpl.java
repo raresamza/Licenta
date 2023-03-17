@@ -51,20 +51,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getStudents() {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOs = new ArrayList<>();
+    public List<User> getStudents() {
+//        List<User> users = userRepository.findAll();
+//        List<UserDTO> userDTOs = new ArrayList<>();
+//
+//
+//
+//        for (User u : users) {
+//            System.out.println(u.getRole()+ " vs " + Role.STUDENT.toString());
+//            System.out.println(u.getRole().getClass()+ " vs " + Role.STUDENT.toString().getClass());
+//            if (u.getRole().toString().equals(Role.STUDENT.toString())) {
+//                UserDTO userDTO = mapper.toDTO(u);
+//                userDTOs.add(userDTO);
+//            }
+//        }
+//
+//        return userDTOs;
 
-        for (User u : users) {
-            System.out.println(u.getRole()+ " vs " + Role.STUDENT.toString());
-            System.out.println(u.getRole().getClass()+ " vs " + Role.STUDENT.toString().getClass());
-            if (u.getRole().toString().equals(Role.STUDENT.toString())) {
-                UserDTO userDTO = mapper.toDTO(u);
-                userDTOs.add(userDTO);
-            }
-        }
-
-        return userDTOs;
+        return userRepository.findAll().stream().filter(user -> user.getRole().toString().equals(Role.STUDENT.toString())).toList();
     }
 
     @Override

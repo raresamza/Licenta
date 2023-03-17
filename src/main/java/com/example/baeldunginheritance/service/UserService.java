@@ -3,7 +3,6 @@ package com.example.baeldunginheritance.service;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.collection.User;
-import com.example.baeldunginheritance.collection.VerificationToken;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public interface UserService {
 
     boolean checkIfValidOldPassword(User user, String oldPassword);
 
-    List<UserDTO> getStudents();
+    List<User> getStudents();
 
 //    VerificationToken generateNewVerificationToken(String oldToken);
 }

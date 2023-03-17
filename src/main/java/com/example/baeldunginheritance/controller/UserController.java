@@ -53,7 +53,7 @@ public class UserController {
     }
     @GetMapping("/student")
     @ResponseBody
-    public List<UserDTO> getStudents() {
+    public List<User> getStudents() {
         return userService.getStudents();
     }
 
