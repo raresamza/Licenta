@@ -56,7 +56,9 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTOs = new ArrayList<>();
 
         for (User u : users) {
-            if (u.getRole().equals(Role.STUDENT.toString())) {
+            System.out.println(u.getRole()+ " vs " + Role.STUDENT.toString());
+            System.out.println(u.getRole().getClass()+ " vs " + Role.STUDENT.toString().getClass());
+            if (u.getRole().toString().equals(Role.STUDENT.toString())) {
                 UserDTO userDTO = mapper.toDTO(u);
                 userDTOs.add(userDTO);
             }
