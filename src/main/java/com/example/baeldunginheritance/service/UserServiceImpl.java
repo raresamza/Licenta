@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -51,8 +51,23 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<UserDTO> getStudents() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+
+        for (User u : users) {
+            if (u.getRole().equals(Role.STUDENT.toString())) {
+                UserDTO userDTO = mapper.toDTO(u);
+                userDTOs.add(userDTO);
+            }
+        }
+
+        return userDTOs;
+    }
+
+    @Override
     public User saveStudent(UserCreationDTO userCreationDTO) {
-        User student=mapper.toUser(userCreationDTO);
+        User student = mapper.toUser(userCreationDTO);
         student.setRole(Role.STUDENT);
 //        User test=userRepository.findUserByEmail(student.getEmail());
         return userRepository.insert(student);
@@ -60,7 +75,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User saveTeacher(UserCreationDTO userCreationDTO) {
-        User teacher=mapper.toUser(userCreationDTO);
+        User teacher = mapper.toUser(userCreationDTO);
         teacher.setRole(Role.TEACHER);
         return userRepository.insert(teacher);
     }
@@ -72,20 +87,20 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void saveVerificationTokenForUser(String token, User user) {
-        VerificationToken verificationToken=new VerificationToken(token,user);
+        VerificationToken verificationToken = new VerificationToken(token, user);
         verificationTokenRepository.insert(verificationToken);
     }
 
     @Override
     public String validateVerificationToken(String token) {
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-        if(verificationToken==null) {
+        if (verificationToken == null) {
             return "Invalid token";
         }
 
-        User user=verificationToken.getUser();
-        Calendar calendar=Calendar.getInstance();
-        if(verificationToken.getExpirationTime().getTime()-calendar.getTime().getTime()<=0) {
+        User user = verificationToken.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if (verificationToken.getExpirationTime().getTime() - calendar.getTime().getTime() <= 0) {
             verificationTokenRepository.delete(verificationToken);
             return "Token expired";
         }
@@ -108,7 +123,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void createPasswordResetTokenForUser(User user, String token) {
-        PasswordResetToken passwordResetToken=new PasswordResetToken(token,user);
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
         passwordResetTokenRepository.insert(passwordResetToken);
     }
 
@@ -116,13 +131,13 @@ public class UserServiceImpl implements UserService{
     public String validatePasswordResetToken(String token) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
 
-        if(passwordResetToken==null) {
+        if (passwordResetToken == null) {
             return "Invalid token";
         }
 
-        User user=passwordResetToken.getUser();
-        Calendar calendar=Calendar.getInstance();
-        if(passwordResetToken.getExpirationTime().getTime()-calendar.getTime().getTime()<=0) {
+        User user = passwordResetToken.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if (passwordResetToken.getExpirationTime().getTime() - calendar.getTime().getTime() <= 0) {
             passwordResetTokenRepository.delete(passwordResetToken);
             return "Token expired";
         }
@@ -145,6 +160,7 @@ public class UserServiceImpl implements UserService{
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
+
 
 //    @Override
 //    public VerificationToken generateNewVerificationToken(String oldToken) {

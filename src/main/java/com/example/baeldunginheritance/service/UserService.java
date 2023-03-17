@@ -35,5 +35,7 @@ public interface UserService {
 
     boolean checkIfValidOldPassword(User user, String oldPassword);
 
+    List<UserDTO> getStudents();
+
 //    VerificationToken generateNewVerificationToken(String oldToken);
 }

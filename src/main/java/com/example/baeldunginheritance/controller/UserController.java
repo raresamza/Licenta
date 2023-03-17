@@ -26,7 +26,9 @@ import java.util.UUID;
 //                        "http://localhost:3000/sign-up/teacher",
 //                        "https://sssssss.herokuapp.com/sign-up/teacher"})
 
-@CrossOrigin(origins = "https://sssssss.herokuapp.com")
+@CrossOrigin(origins = {"https://sssssss.herokuapp.com",
+                        "http://localhost:3000/",
+                        "http://localhost:3000/sign-up/teacher"})
 @RequestMapping("/user")
 public class UserController {
 
@@ -48,6 +50,11 @@ public class UserController {
     @ResponseBody
     public List<UserDTO> getUsers() {
         return userService.getUsers();
+    }
+    @GetMapping("/student")
+    @ResponseBody
+    public List<UserDTO> getStudents() {
+        return userService.getStudents();
     }
 
     @PostMapping("/register/student")

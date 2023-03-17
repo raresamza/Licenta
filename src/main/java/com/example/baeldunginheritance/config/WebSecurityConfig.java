@@ -15,6 +15,7 @@ public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST_URLS={
             "/user",
+            "/user/student",
             "/user/register/student",
             "/user/register/teacher",
             "/teacher",
@@ -29,6 +30,7 @@ public class WebSecurityConfig {
             "164.90.185.151/user",
             "164.90.185.151/student",
             "https://licenta-production.up.railway.app/user",
+            "https://licenta-production.up.railway.app/user/student",
             "https://licenta-production.up.railway.app/user/register/teacher",
             "https://licenta-production.up.railway.app/user/register/student",
             "https://licenta-production.up.railway.app/*"
