@@ -41,21 +41,34 @@ public class Mapper {
         String lastName=user.getLastName();
         String uniName=user.getUniName();
         Integer age=user.getAge();
+        String photURL=user.getPhotoURL();
 
-        return new UserDTO(firstName,lastName,uniName,age);
+        return new UserDTO(firstName,lastName,uniName,age,photURL);
     }
 
     public User toUser(UserCreationDTO userCreationDTO) {
         return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
                 userCreationDTO.getAge(),userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()));
     }
+    public User toUserPhoto(UserCreationDTO userCreationDTO) {
+        return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
+                userCreationDTO.getAge(),userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()),userCreationDTO.getPhotoURL());
+    }
     public User toStudentUser(UserCreationDTO userCreationDTO) {
         return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
                 userCreationDTO.getAge(),Role.STUDENT,userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()));
     }
+    public User toStudentUserPhoto(UserCreationDTO userCreationDTO) {
+        return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
+                userCreationDTO.getAge(),Role.STUDENT,userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()),userCreationDTO.getPhotoURL());
+    }
     public User toTeacherUser(UserCreationDTO userCreationDTO) {
         return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
                 userCreationDTO.getAge(),Role.TEACHER,userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()));
+    }
+    public User toTeacherUserPhoto(UserCreationDTO userCreationDTO) {
+        return new User(userCreationDTO.getFirstName(),userCreationDTO.getLastName(),userCreationDTO.getUniName(),
+                userCreationDTO.getAge(),Role.TEACHER,userCreationDTO.getEmail(),passwordEncoder.encode(userCreationDTO.getPassword()),userCreationDTO.getPhotoURL());
     }
 
     public Teacher toTeacher(TeacherCreationDTO teacherDTO) {

@@ -36,5 +36,9 @@ public interface UserService {
 
     List<User> getStudents();
 
+    User saveTeacherPhoto(UserCreationDTO userCreationDTO);
+
+    User saveStudentPhoto(UserCreationDTO userCreationDTO);
+
 //    VerificationToken generateNewVerificationToken(String oldToken);
 }

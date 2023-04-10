@@ -67,9 +67,10 @@ public class UserServiceImpl implements UserService {
 //        }
 //
 //        return userDTOs;
-
         return userRepository.findAll().stream().filter(user -> user.getRole().toString().equals(Role.STUDENT.toString())).toList();
     }
+
+
 
     @Override
     public User saveStudent(UserCreationDTO userCreationDTO) {
@@ -80,11 +81,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User saveStudentPhoto(UserCreationDTO userCreationDTO) {
+        User student = mapper.toUserPhoto(userCreationDTO);
+        student.setRole(Role.STUDENT);
+//        User test=userRepository.findUserByEmail(student.getEmail());
+        return userRepository.insert(student);
+    }
+
+    @Override
+    public User saveTeacherPhoto(UserCreationDTO userCreationDTO) {
+        User teacher = mapper.toUserPhoto(userCreationDTO);
+        teacher.setRole(Role.TEACHER);
+        return userRepository.insert(teacher);
+    }
+
+
+
+    @Override
     public User saveTeacher(UserCreationDTO userCreationDTO) {
         User teacher = mapper.toUser(userCreationDTO);
         teacher.setRole(Role.TEACHER);
         return userRepository.insert(teacher);
     }
+
 
     @Override
     public void delete(String id) {

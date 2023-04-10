@@ -28,7 +28,8 @@ import java.util.UUID;
 
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
                         "http://localhost:3000/",
-                        "http://localhost:3000/sign-up/teacher"})
+                        "http://localhost:3000/sign-up/teacher",
+                        "http://localhost:3000/sign-up/teacherP"})
 @RequestMapping("/user")
 public class UserController {
 
@@ -67,6 +68,17 @@ public class UserController {
         ));
         return userService.saveStudent(userCreationDTO);
     }
+    @PostMapping("/register/studentP")
+    @ResponseBody
+    public User saveStudentPhoto(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
+        User student = mapper.toStudentUserPhoto(userCreationDTO);
+        publisher.publishEvent(new RegistrationCompleteEvent(
+                student,
+                applicationUrl(httpServletRequest)
+        ));
+        System.out.println(student  .getPhotoURL());
+        return userService.saveStudentPhoto(userCreationDTO);
+    }
 
     @PostMapping("/register/teacher")
     @ResponseBody
@@ -77,6 +89,19 @@ public class UserController {
                 applicationUrl(httpServletRequest)
         ));
         return userService.saveTeacher(userCreationDTO);
+    }
+
+    @PostMapping("/register/teacherP")
+    @ResponseBody
+    public User saveTeacherPhoto(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
+        User teacher = mapper.toTeacherUserPhoto(userCreationDTO);
+        System.out.println(teacher.getPhotoURL());
+        publisher.publishEvent(new RegistrationCompleteEvent(
+                teacher,
+                applicationUrl(httpServletRequest)
+        ));
+        System.out.println(teacher.getPhotoURL());
+        return userService.saveTeacherPhoto(userCreationDTO);
     }
 
     private String applicationUrl(HttpServletRequest httpServletRequest) {

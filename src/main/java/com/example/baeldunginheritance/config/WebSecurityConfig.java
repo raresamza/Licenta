@@ -1,23 +1,32 @@
 package com.example.baeldunginheritance.config;
 
 
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 @EnableWebSecurity
 @Component
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST_URLS={
-            "/user",
+//            "/user",
+            "/auth/authenticate",
             "/user/student",
             "/user/register/student",
+            "/user/register/studentP",
             "/user/register/teacher",
+            "/user/register/teacherP",
             "/teacher",
             "/student",
             "/user/verifyRegistration",
@@ -29,13 +38,18 @@ public class WebSecurityConfig {
             "/user/changePassword",
             "164.90.185.151/user",
             "164.90.185.151/student",
+            "/auth/**",
             "https://licenta-production.up.railway.app/user",
             "https://licenta-production.up.railway.app/user/student",
             "https://licenta-production.up.railway.app/user/register/teacher",
+            "https://licenta-production.up.railway.app/user/register/teacherP",
             "https://licenta-production.up.railway.app/user/register/student",
+            "https://licenta-production.up.railway.app/user/register/studentP",
             "https://licenta-production.up.railway.app/*"
 
     };
+    private final JWTAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -44,14 +58,22 @@ public class WebSecurityConfig {
 
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors()
                 .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers(WHITE_LIST_URLS).permitAll();
+                .requestMatchers(WHITE_LIST_URLS).permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
