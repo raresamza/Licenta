@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class User implements UserDetails {
 
     private String photoURL;
 
+    private List<JWTToken> tokens;
+
+    private List<Course> courses;
+
 
     public User(String firstName, String lastName, String uniName, Integer age, Role role, String email, String password) {
         this.firstName = firstName;
@@ -48,6 +53,7 @@ public class User implements UserDetails {
         this.role = role;
         this.email = email;
         this.password = password;
+        this.courses=new ArrayList<>();
     }
     public User(String firstName, String lastName, String uniName, Integer age, Role role, String email, String password,String photoURL) {
         this.firstName = firstName;
@@ -58,6 +64,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.photoURL=photoURL;
+        this.courses=new ArrayList<>();
     }
     public User(String firstName, String lastName, String uniName, Integer age, String email, String password) {
         this.firstName = firstName;
@@ -66,6 +73,7 @@ public class User implements UserDetails {
         this.age = age;
         this.email = email;
         this.password = password;
+        this.courses=new ArrayList<>();
     }
 
     public User(String firstName, String lastName, String uniName, Integer age, String email, String password,String photoURL) {
@@ -76,6 +84,13 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.photoURL=photoURL;
+        this.courses=new ArrayList<>();
+    }
+
+    public void addCourse(Course course) {
+        System.out.println("in add before add:"+this.getCourses());
+        this.courses.add(course);
+        System.out.println("in add after add: "+this.getCourses());
     }
 
     @Override
@@ -114,4 +129,6 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
+
 }

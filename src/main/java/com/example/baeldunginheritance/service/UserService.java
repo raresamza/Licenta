@@ -1,5 +1,7 @@
 package com.example.baeldunginheritance.service;
 
+import com.example.baeldunginheritance.DTO.AddUserToCourseDTO;
+import com.example.baeldunginheritance.DTO.UpdateEmailDTO;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.collection.User;
@@ -39,6 +41,10 @@ public interface UserService {
     User saveTeacherPhoto(UserCreationDTO userCreationDTO);
 
     User saveStudentPhoto(UserCreationDTO userCreationDTO);
+
+    User updateEmail(UpdateEmailDTO newEmail);
+
+    User addCourseToUser(AddUserToCourseDTO addUserToCourseDTO);
 
 //    VerificationToken generateNewVerificationToken(String oldToken);
 }

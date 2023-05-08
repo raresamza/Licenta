@@ -22,3 +22,10 @@ spring:
     username: raresamza@gmail.com
     password: agieenylsnyyuasw
     port: '587'
+
+application:
+  security:
+    jwt:
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000

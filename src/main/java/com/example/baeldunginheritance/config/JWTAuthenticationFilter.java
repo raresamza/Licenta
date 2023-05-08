@@ -1,5 +1,6 @@
 package com.example.baeldunginheritance.config;
 
+import com.example.baeldunginheritance.repository.JWTTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTService JWTService;
     private final UserDetailsService userDetailsService;
+    private final JWTTokenRepository jwtTokenRepository;
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -41,9 +43,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 //        System.out.println(SecurityContextHolder.getContext().toString());
 //        if(email != null && !(SecurityContextHolder.getContext().getAuthentication() ==null)) {
             UserDetails userDetails=this.userDetailsService.loadUserByUsername(email);
+            var isTokenValid=jwtTokenRepository.findByToken(JWTToken).map(t->!t.isExpired() && !t.isRevoked()).orElse(false);
+            System.out.println("should be true if not go digging: "+isTokenValid);
             System.out.println("email nu e null si functia lunga nu e null"+userDetails.toString());
             System.out.println(JWTService.isTokenValid(JWTToken,userDetails));
-            if(JWTService.isTokenValid(JWTToken,userDetails)) {
+            if(JWTService.isTokenValid(JWTToken,userDetails) && isTokenValid) {
                 System.out.println("token valid");
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,

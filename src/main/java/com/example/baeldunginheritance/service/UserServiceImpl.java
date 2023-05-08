@@ -1,13 +1,18 @@
 package com.example.baeldunginheritance.service;
 
 
+import com.example.baeldunginheritance.DTO.AddUserToCourseDTO;
+import com.example.baeldunginheritance.DTO.UpdateEmailDTO;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.Utils.Role;
 import com.example.baeldunginheritance.collection.*;
+import com.example.baeldunginheritance.repository.CourseRepository;
 import com.example.baeldunginheritance.repository.PasswordResetTokenRepository;
 import com.example.baeldunginheritance.repository.UserRepository;
 import com.example.baeldunginheritance.repository.VerificationTokenRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +32,19 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
+    private final CourseRepository courseRepository;
+
+
     private final Mapper mapper;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, Mapper mapper, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, Mapper mapper, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository, MongoTemplate mongoTemplate, CourseRepository courseRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.verificationTokenRepository = verificationTokenRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -86,6 +96,39 @@ public class UserServiceImpl implements UserService {
         student.setRole(Role.STUDENT);
 //        User test=userRepository.findUserByEmail(student.getEmail());
         return userRepository.insert(student);
+    }
+
+    @Override
+    public User updateEmail( UpdateEmailDTO newEmail) {
+        User user=userRepository.findUserByEmail(newEmail.getOldEmail());
+
+        if(user==null) {
+            throw new UsernameNotFoundException("User not found");
+        } else {
+            user.setEmail(newEmail.getNewEmail());
+            System.out.println("new email is: "+newEmail);
+            System.out.println("new Person: "+user.toString());
+            return userRepository.save(user);
+        }
+//        return null;
+    }
+
+    @Override
+    public User addCourseToUser(AddUserToCourseDTO addUserToCourseDTO) {
+        Course course=courseRepository.findByCourseCode(addUserToCourseDTO.getCourseCode());
+        if(course==null) {
+            throw new UsernameNotFoundException("Course not found please enter a valid code");
+        }
+        User user= userRepository.findUserByEmail(addUserToCourseDTO.getEmail());
+        if(user==null) {
+            throw new UsernameNotFoundException("user not found please enter a valid email");
+        }
+        user.addCourse(course);
+        if(!course.getUsersEmails().contains(addUserToCourseDTO.getEmail())) {
+            course.addUser(addUserToCourseDTO.getEmail());
+        }
+        courseRepository.save(course);
+        return userRepository.save(user);
     }
 
     @Override

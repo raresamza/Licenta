@@ -1,8 +1,7 @@
 package com.example.baeldunginheritance.controller;
 
-import com.example.baeldunginheritance.DTO.PasswordModel;
-import com.example.baeldunginheritance.DTO.UserCreationDTO;
-import com.example.baeldunginheritance.DTO.UserDTO;
+import com.example.baeldunginheritance.DTO.*;
+import com.example.baeldunginheritance.collection.Course;
 import com.example.baeldunginheritance.collection.Mapper;
 import com.example.baeldunginheritance.collection.User;
 import com.example.baeldunginheritance.collection.VerificationToken;
@@ -27,9 +26,17 @@ import java.util.UUID;
 //                        "https://sssssss.herokuapp.com/sign-up/teacher"})
 
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
-                        "http://localhost:3000/",
-                        "http://localhost:3000/sign-up/teacher",
-                        "http://localhost:3000/sign-up/teacherP"})
+        "http://localhost:3000/",
+        "https://frotnend.vercel.app/",
+        "http://localhost:3000/user-profile",
+        "http://localhost:3000/change-email",
+        "http://localhost:3000/sign-up/teacher",
+        "http://localhost:3000/sign-up/teacherP",
+        "https://sss-production-108e.up.railway.app/",
+        "https://sss-production-108e.up.railway.app",
+        "https://sss-production-108e.up.railway.app/sign-up/studentP",
+        "https://sss-production-108e.up.railway.app/sign-up/teacherP",
+        "http://localhost:3000/sign-up/studentP",})
 @RequestMapping("/user")
 public class UserController {
 
@@ -52,6 +59,7 @@ public class UserController {
     public List<UserDTO> getUsers() {
         return userService.getUsers();
     }
+
     @GetMapping("/student")
     @ResponseBody
     public List<User> getStudents() {
@@ -68,6 +76,7 @@ public class UserController {
         ));
         return userService.saveStudent(userCreationDTO);
     }
+
     @PostMapping("/register/studentP")
     @ResponseBody
     public User saveStudentPhoto(@RequestBody UserCreationDTO userCreationDTO, final HttpServletRequest httpServletRequest) {
@@ -76,7 +85,7 @@ public class UserController {
                 student,
                 applicationUrl(httpServletRequest)
         ));
-        System.out.println(student  .getPhotoURL());
+        System.out.println(student.getPhotoURL());
         return userService.saveStudentPhoto(userCreationDTO);
     }
 
@@ -115,6 +124,34 @@ public class UserController {
     }
 
 
+    //    @PutMapping("/updateEmail/{email}")
+//    @ResponseBody
+//    public User updateEmail(@PathVariable String email,@RequestBody String newEmail) {
+//        System.out.println(email+" EMAIL");
+//        System.out.println(newEmail+" NEW EMAIL");
+//        return  userService.updateEmail(email,newEmail);
+//    }
+//    @PatchMapping("/update")
+//    public void updateBio(String email,@RequestBody bio) {
+//        userService.updateBio(email);
+//    }
+    @PutMapping("/updateEmail")
+    @ResponseBody
+    public User updateEmail(@RequestBody UpdateEmailDTO newEmail) {
+        return userService.updateEmail(newEmail);
+    }
+
+    //    @PatchMapping("/update")
+//    public void updateBio(String email,@RequestBody bio) {
+//        userService.updateBio(email);
+//    }
+//refa functia cu update DTO care contine doar request body si are ca obiect inauntru mail vechi si mailu nou.
+    @GetMapping("/{email}")
+    public User getByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
+
+
     @CrossOrigin
     @GetMapping("/verifyRegistration")
     public String verifyRegistration(@RequestParam("token") String token) {
@@ -125,6 +162,12 @@ public class UserController {
         } else {
             return "Bad user or token has expired (check if 10+ minutes have passed since you received th email)";
         }
+    }
+
+    @PutMapping("/add/course")
+    @ResponseBody
+    public User addCourseToUser(@RequestBody AddUserToCourseDTO addUserToCourseDTO) {
+        return userService.addCourseToUser(addUserToCourseDTO);
     }
 
     @GetMapping("/resendToken")
@@ -180,14 +223,13 @@ public class UserController {
     @PostMapping("/changePassword")
     public String changePassword(@RequestBody PasswordModel passwordModel) {
         User user = userService.findUserByEmail(passwordModel.getEmail());
-        if(!userService.checkIfValidOldPassword(user,passwordModel.getOldPassword())) {
+        if (!userService.checkIfValidOldPassword(user, passwordModel.getOldPassword())) {
             return "Invalid old password";
         }
 
-        userService.changePassword(user,passwordModel.getNewPassword());
+        userService.changePassword(user, passwordModel.getNewPassword());
         return "Password changed successfully";
     }
-
 
 
     @DeleteMapping

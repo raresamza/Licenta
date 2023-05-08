@@ -8,10 +8,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 
 @EnableWebSecurity
@@ -20,7 +22,17 @@ import org.springframework.stereotype.Component;
 public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST_URLS={
-//            "/user",
+            "/user",
+            "/user/{email}",
+            "/course/get-by-code/{courseCode}",
+            "/course/get-by-code/**",
+            "/course/get-by-code/**/",
+            "/user/updateEmail",
+            "/course",
+            "/course/{email}",
+            "/course/add",
+            "/user/add/course",
+            "/course/add/lecture",
             "/auth/authenticate",
             "/user/student",
             "/user/register/student",
@@ -43,6 +55,7 @@ public class WebSecurityConfig {
             "sssssss.herokuapp.com/",
             "sssssss.herokuapp.com",
             "sssssss.herokuapp.com/user",
+            "http://localhost:8080/auth/authenticate",
             "https://licenta-production.up.railway.app/user/student",
             "https://licenta-production.up.railway.app/user/register/teacher",
             "https://licenta-production.up.railway.app/user/register/teacherP",
@@ -53,6 +66,7 @@ public class WebSecurityConfig {
     };
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final LogoutHandler logoutHandler;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -76,7 +90,11 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/auth/logout") // means everytime u get this request just use thislogiut handler.
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
 
         return http.build();
     }

@@ -82,4 +82,16 @@ public class Mapper {
                 studentDTO.getAge(), Role.STUDENT,studentDTO.getEmail(),studentDTO.getPassword() );
     }
 
+    public Course toCourse(CourseDTO courseDTO) {
+        return new Course(courseDTO.getCourseDescription(), courseDTO.getTitle());
+    }
+
+    public CourseDTO toCourseDTO(Course course) {
+        return new CourseDTO(course.getCourseCode(), course.getCourseDescription(), course.getTitle());
+    }
+
+    public Course toCourse(CourseCreationDTO courseCreationDTO) {
+        return new Course(courseCreationDTO.getCourseDescription(), courseCreationDTO.getTitle());
+    }
+
 }
