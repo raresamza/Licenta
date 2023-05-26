@@ -16,10 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -230,11 +227,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//    @Override
-//    public VerificationToken generateNewVerificationToken(String oldToken) {
-//        VerificationToken verificationToken=verificationTokenRepository.findByToken(oldToken);
-//        verificationToken.setToken(UUID.randomUUID().toString());
-//        verificationTokenRepository.insert(verificationToken);
-//        return verificationToken;
-//    }
+    @Override
+    public VerificationToken generateNewVerificationToken(String oldToken) {
+        VerificationToken verificationToken=verificationTokenRepository.findByToken(oldToken);
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationTokenRepository.insert(verificationToken);
+        return verificationToken;
+    }
 }

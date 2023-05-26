@@ -18,9 +18,12 @@ import java.util.List;
 @RequestMapping("/course")
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
         "http://localhost:3000/",
-        "http://localhost:3000/courses-tab/add",
         "https://frotnend.vercel.app/",
-        "http://localhost:3000/courses-tab"})
+        "http://localhost:3000/courses-tab/add",
+        "https://frotnend.vercel.app/courses-tab/add",
+        "http://localhost:3000/courses-tab",
+        "https://frotnend.vercel.app/courses-tab",
+})
 public class CourseController {
 
 

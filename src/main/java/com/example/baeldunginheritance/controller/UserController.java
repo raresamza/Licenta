@@ -26,17 +26,18 @@ import java.util.UUID;
 //                        "https://sssssss.herokuapp.com/sign-up/teacher"})
 
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
-        "http://localhost:3000/",
         "https://frotnend.vercel.app/",
+        "http://localhost:3000/",
         "http://localhost:3000/user-profile",
+        "https://frotnend.vercel.app/user-profile",
         "http://localhost:3000/change-email",
+        "https://frotnend.vercel.app/change-email",
         "http://localhost:3000/sign-up/teacher",
+        "https://frotnend.vercel.app/sign-up/teacher",
         "http://localhost:3000/sign-up/teacherP",
-        "https://sss-production-108e.up.railway.app/",
-        "https://sss-production-108e.up.railway.app",
-        "https://sss-production-108e.up.railway.app/sign-up/studentP",
-        "https://sss-production-108e.up.railway.app/sign-up/teacherP",
-        "http://localhost:3000/sign-up/studentP",})
+        "https://frotnend.vercel.app/sign-up/teacherP",
+        "https://frotnend.vercel.app/sign-up/studentP",
+        "http://localhost:3000/sign-up/studentP"})
 @RequestMapping("/user")
 public class UserController {
 

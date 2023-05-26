@@ -2,9 +2,7 @@ package com.example.baeldunginheritance.collection;
 
 import com.example.baeldunginheritance.Utils.Role;
 import jakarta.persistence.*;
-//import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

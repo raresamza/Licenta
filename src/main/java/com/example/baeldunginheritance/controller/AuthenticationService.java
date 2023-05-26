@@ -1,7 +1,6 @@
 package com.example.baeldunginheritance.controller;
 
 import com.example.baeldunginheritance.DTO.AuthenticationRequest;
-import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.collection.JWTToken;
 import com.example.baeldunginheritance.collection.Mapper;
 import com.example.baeldunginheritance.collection.TokenType;

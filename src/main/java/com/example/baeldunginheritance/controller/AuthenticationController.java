@@ -19,8 +19,10 @@ import java.util.List;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {
-        "https://sssssss.herokuapp.com",
         "https://frotnend.vercel.app/",
+        "https://frotnend.vercel.app/auth",
+        "https://frotnend.vercel.app/auth/authenticate",
+        "https://frotnend.vercel.app/auth/refresh-token",
         "http://localhost:3000/"})
 public class AuthenticationController {
 

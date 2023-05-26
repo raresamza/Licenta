@@ -5,6 +5,7 @@ import com.example.baeldunginheritance.DTO.UpdateEmailDTO;
 import com.example.baeldunginheritance.DTO.UserCreationDTO;
 import com.example.baeldunginheritance.DTO.UserDTO;
 import com.example.baeldunginheritance.collection.User;
+import com.example.baeldunginheritance.collection.VerificationToken;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +47,5 @@ public interface UserService {
 
     User addCourseToUser(AddUserToCourseDTO addUserToCourseDTO);
 
-//    VerificationToken generateNewVerificationToken(String oldToken);
+    VerificationToken generateNewVerificationToken(String oldToken);
 }
