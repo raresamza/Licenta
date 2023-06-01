@@ -5,6 +5,7 @@ import com.example.baeldunginheritance.DTO.*;
 import com.example.baeldunginheritance.collection.Comment;
 import com.example.baeldunginheritance.collection.Course;
 import com.example.baeldunginheritance.collection.Mapper;
+import com.example.baeldunginheritance.collection.Solution;
 import com.example.baeldunginheritance.service.CourseService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.parameters.P;
@@ -83,6 +84,16 @@ public class CourseController {
     @PutMapping("/add/comment")
     public CommentDisplayData addCommentToCourse(@RequestBody Comment comment) {
         return courseService.addCommentToCourse(comment);
+    }
+
+    @PutMapping("/add/solution")
+    public SolutionDisplayData addSolutionToCourse(@RequestBody Solution solution) {
+        return courseService.addSolutionToCourse(solution);
+    }
+
+    @GetMapping("/solutions/{coruseCode}/{lectureHeader}")
+    public List<SolutionDisplayData> getCourseSolutions(@PathVariable String coruseCode, @PathVariable String lectureHeader) {
+        return courseService.getCourseSolutions(coruseCode,lectureHeader);
     }
     @GetMapping("/comments/{coruseCode}/{lectureHeader}")
     public List<CommentDisplayData> getCourseComments(@PathVariable String coruseCode, @PathVariable String lectureHeader) {

@@ -101,7 +101,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CommentDisplayData addCommentToCourse(Comment comment) {
-        CommentDisplayData commentDisplayData=new CommentDisplayData();
+        CommentDisplayData commentDisplayData = new CommentDisplayData();
         Course course = courseRepository.findByCourseCode(comment.getCoruseCode());
         boolean lectureFlag = false;
 
@@ -125,25 +125,25 @@ public class CourseServiceImpl implements CourseService {
         if (!lectureFlag) {
             throw new IllegalStateException("Lecture not found");
         }
-         courseRepository.save(course);
+        courseRepository.save(course);
         return commentDisplayData;
     }
 
     @Override
     public List<CommentDisplayData> getCourseComments(String courseCode, String lectureHeader) {
-        List<CommentDisplayData> commentList=new ArrayList<>();
+        List<CommentDisplayData> commentList = new ArrayList<>();
         Course course = courseRepository.findByCourseCode(courseCode);
         boolean lectureFlag = false;
 
         if (course != null) {
             for (Lecture l : course.getLectures()) {
                 if (l.getHeader().equals(lectureHeader)) {
-                    lectureFlag=true;
+                    lectureFlag = true;
                     System.out.println(l.getComments());
-                    if(!(l.getComments().isEmpty())) {
-                        for(CommentDTO c:l.getComments()) {
+                    if (!(l.getComments().isEmpty())) {
+                        for (CommentDTO c : l.getComments()) {
                             User userByEmail = userRepository.findUserByEmail(c.getEmail());
-                            CommentDisplayData commentDisplayData=new CommentDisplayData(c.getComment(), userByEmail.getPhotoURL());
+                            CommentDisplayData commentDisplayData = new CommentDisplayData(c.getComment(), userByEmail.getPhotoURL());
                             commentList.add(commentDisplayData);
                         }
                     }
@@ -160,7 +160,67 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public String deleteAllCourses() {
-         courseRepository.deleteAll();
+        courseRepository.deleteAll();
         return "Successful";
     }
+
+    @Override
+    public SolutionDisplayData addSolutionToCourse(Solution solution) {
+        SolutionDisplayData solutionDisplayData = new SolutionDisplayData();
+        Course course = courseRepository.findByCourseCode(solution.getCoruseCode());
+        boolean lectureFlag = false;
+
+        if (course != null) {
+            if (!(course.getUsersEmails().contains(solution.getEmail()))) {
+                throw new UsernameNotFoundException("user not enrolled into course");
+            } else {
+                for (Lecture l : course.getLectures()) {
+                    if (l.getHeader().equals(solution.getLectureHeader())) {
+                        User userByEmail = userRepository.findUserByEmail(solution.getEmail());
+                        solutionDisplayData.setSolution(solution.getSolution());
+                        solutionDisplayData.setPhotoUrl(userByEmail.getPhotoURL());
+                        l.addSolution(mapper.toSolutionDTO(solution));
+                        lectureFlag = true;
+                    }
+                }
+            }
+        } else {
+            throw new IllegalStateException("Course not found");
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+        courseRepository.save(course);
+        return solutionDisplayData;
+    }
+
+    @Override
+    public List<SolutionDisplayData> getCourseSolutions(String coruseCode, String lectureHeader) {
+        List<SolutionDisplayData> solutionList = new ArrayList<>();
+        Course course = courseRepository.findByCourseCode(coruseCode);
+        boolean lectureFlag = false;
+
+        if (course != null) {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(lectureHeader)) {
+                    lectureFlag = true;
+                    System.out.println(l.getSolutions());
+                    if (!(l.getComments().isEmpty())) {
+                        for (SolutionDTO c : l.getSolutions()) {
+                            User userByEmail = userRepository.findUserByEmail(c.getEmail());
+                            SolutionDisplayData solutionDisplayData = new SolutionDisplayData(c.getSolution(), userByEmail.getPhotoURL());
+                            solutionList.add(solutionDisplayData);
+                        }
+                    }
+                }
+            }
+        } else {
+            throw new IllegalStateException("Course not found");
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+        return solutionList;
+    }
+
 }

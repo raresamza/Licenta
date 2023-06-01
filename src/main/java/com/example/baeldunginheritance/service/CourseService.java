@@ -3,6 +3,7 @@ package com.example.baeldunginheritance.service;
 import com.example.baeldunginheritance.DTO.*;
 import com.example.baeldunginheritance.collection.Comment;
 import com.example.baeldunginheritance.collection.Course;
+import com.example.baeldunginheritance.collection.Solution;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -28,4 +29,8 @@ public interface CourseService {
     List<CommentDisplayData> getCourseComments(String courseCode,String lectureHeader);
 
     String deleteAllCourses();
+
+    SolutionDisplayData addSolutionToCourse(Solution solution);
+
+    List<SolutionDisplayData> getCourseSolutions(String coruseCode, String lectureHeader);
 }

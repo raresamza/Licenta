@@ -98,4 +98,8 @@ public class Mapper {
         return new CommentDTO(comment.getEmail(), comment.getComment());
     }
 
+    public SolutionDTO toSolutionDTO(Solution solution) {
+        return new SolutionDTO(solution.getEmail(), solution.getSolution());
+    }
+
 }
