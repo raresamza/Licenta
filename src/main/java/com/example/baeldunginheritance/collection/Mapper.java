@@ -94,4 +94,8 @@ public class Mapper {
         return new Course(courseCreationDTO.getCourseDescription(), courseCreationDTO.getTitle());
     }
 
+    public CommentDTO toCommentDTO(Comment comment) {
+        return new CommentDTO(comment.getEmail(), comment.getComment());
+    }
+
 }

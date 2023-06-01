@@ -1,7 +1,6 @@
 package com.example.baeldunginheritance.config;
 
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,13 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @EnableWebSecurity
 @Component
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private static final String[] WHITE_LIST_URLS={
+    private static final String[] WHITE_LIST_URLS = {
             "/user",
             "/user/{email}",
             "/course/get-by-code/{courseCode}",
@@ -51,6 +51,9 @@ public class WebSecurityConfig {
             "164.90.185.151/user",
             "164.90.185.151/student",
             "/auth/**",
+            "course/add/comment",
+            "course/comments/{coruseCode}/{lectureHeader}",
+            "course/deleteall",
             "https://licenta-production.up.railway.app/user",
             "http://localhost:8080/auth/authenticate",
             "https://licenta-production.up.railway.app/auth/authenticate",

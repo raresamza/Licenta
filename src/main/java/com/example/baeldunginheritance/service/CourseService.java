@@ -1,8 +1,7 @@
 package com.example.baeldunginheritance.service;
 
-import com.example.baeldunginheritance.DTO.AddLectureDTO;
-import com.example.baeldunginheritance.DTO.CourseCreationDTO;
-import com.example.baeldunginheritance.DTO.CourseDTO;
+import com.example.baeldunginheritance.DTO.*;
+import com.example.baeldunginheritance.collection.Comment;
 import com.example.baeldunginheritance.collection.Course;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -23,4 +22,10 @@ public interface CourseService {
     Course getCoursesByCourseCode(HttpServletRequest httpServletRequest);
 
     Course getCoursesByCourseId(String id);
+
+    CommentDisplayData addCommentToCourse(Comment comment);
+
+    List<CommentDisplayData> getCourseComments(String courseCode,String lectureHeader);
+
+    String deleteAllCourses();
 }

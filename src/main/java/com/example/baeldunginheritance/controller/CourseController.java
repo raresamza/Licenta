@@ -1,14 +1,13 @@
 package com.example.baeldunginheritance.controller;
 
 
-import com.example.baeldunginheritance.DTO.AddLectureDTO;
-import com.example.baeldunginheritance.DTO.AddUserToCourseDTO;
-import com.example.baeldunginheritance.DTO.CourseCreationDTO;
-import com.example.baeldunginheritance.DTO.CourseDTO;
+import com.example.baeldunginheritance.DTO.*;
+import com.example.baeldunginheritance.collection.Comment;
 import com.example.baeldunginheritance.collection.Course;
 import com.example.baeldunginheritance.collection.Mapper;
 import com.example.baeldunginheritance.service.CourseService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -22,6 +21,7 @@ import java.util.List;
         "http://localhost:3000/courses-tab/add",
         "https://frotnend.vercel.app/courses-tab/add",
         "http://localhost:3000/courses-tab",
+        "http://localhost:3000/courses-tab/*",
         "https://frotnend.vercel.app/courses-tab",
 })
 public class CourseController {
@@ -77,5 +77,20 @@ public class CourseController {
     @ResponseBody
     public Course addLectureToCourse(@RequestBody AddLectureDTO addLectureDTO) {
         return courseService.addLectureToCourse(addLectureDTO);
+    }
+
+
+    @PutMapping("/add/comment")
+    public CommentDisplayData addCommentToCourse(@RequestBody Comment comment) {
+        return courseService.addCommentToCourse(comment);
+    }
+    @GetMapping("/comments/{coruseCode}/{lectureHeader}")
+    public List<CommentDisplayData> getCourseComments(@PathVariable String coruseCode, @PathVariable String lectureHeader) {
+        return courseService.getCourseComments(coruseCode,lectureHeader);
+    }
+
+    @DeleteMapping("/deleteall/")
+    public String deleteAllCourses() {
+        return courseService.deleteAllCourses();
     }
 }
