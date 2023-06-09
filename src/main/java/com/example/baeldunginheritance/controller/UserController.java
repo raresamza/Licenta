@@ -28,6 +28,10 @@ import java.util.UUID;
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
         "https://frotnend.vercel.app/",
         "http://localhost:3000/",
+        "http://localhost:3000/courses-tab",
+        "http://localhost:3000/courses-tab/",
+        "http://localhost:3000/courses-tab/*",
+        "http://localhost:3000/*",
         "http://localhost:3000/user-profile",
         "https://frotnend.vercel.app/user-profile",
         "http://localhost:3000/change-email",
@@ -241,5 +245,12 @@ public class UserController {
     @DeleteMapping("/token")
     public void deleteAllTokens() {
         verificationTokenService.deleteAllTokens();
+    }
+
+
+
+    @GetMapping("/photourl/{email}")
+    public String getPhotoURLByEmail(@PathVariable String email) {
+        return userService.getPhotoURLByEmail(email);
     }
 }

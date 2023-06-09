@@ -38,6 +38,7 @@ public class WebSecurityConfig {
             "/user/register/student",
             "/user/register/studentP",
             "/user/register/teacher",
+            "/user/photourl/{email}",
             "/user/register/teacherP",
             "/teacher",
             "/student",

@@ -1,10 +1,7 @@
 package com.example.baeldunginheritance.service;
 
 
-import com.example.baeldunginheritance.DTO.AddUserToCourseDTO;
-import com.example.baeldunginheritance.DTO.UpdateEmailDTO;
-import com.example.baeldunginheritance.DTO.UserCreationDTO;
-import com.example.baeldunginheritance.DTO.UserDTO;
+import com.example.baeldunginheritance.DTO.*;
 import com.example.baeldunginheritance.Utils.Role;
 import com.example.baeldunginheritance.collection.*;
 import com.example.baeldunginheritance.repository.CourseRepository;
@@ -233,5 +230,12 @@ public class UserServiceImpl implements UserService {
         verificationToken.setToken(UUID.randomUUID().toString());
         verificationTokenRepository.insert(verificationToken);
         return verificationToken;
+    }
+
+    @Override
+    public String getPhotoURLByEmail(String email) {
+        User user=findUserByEmail(email);
+
+        return user.getPhotoURL();
     }
 }

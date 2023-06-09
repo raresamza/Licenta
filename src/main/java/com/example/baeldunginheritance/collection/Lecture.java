@@ -19,6 +19,7 @@ public class Lecture {
     private String problemContent;
     private ArrayList<CommentDTO> comments=new ArrayList<>();
     private ArrayList<SolutionDTO> solutions=new ArrayList<>();
+//    private String test;
 
 
     public void addComment(CommentDTO comment) {
@@ -28,4 +29,7 @@ public class Lecture {
     public void addSolution(SolutionDTO solutionDTO) {
         this.solutions.add(solutionDTO);
     }
+
 }
+
+
