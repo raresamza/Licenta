@@ -106,6 +106,27 @@ public class CourseController {
         return courseService.addTestsToCourse(addTestDTO);
     }
 
+    @PutMapping("/upvote")
+    public Integer upvote(@RequestBody VoteDTO voteDTO) {
+        return courseService.upvote(voteDTO);
+    }
+
+    @PutMapping("/downvote")
+    public Integer downvote(@RequestBody VoteDTO voteDTO) {
+        System.out.println(voteDTO.toString());
+        return courseService.downvote(voteDTO);
+    }
+
+    @GetMapping("/get/upvotes/{coruseCode}/{lectureHeader}")
+    public Integer getUpvotes(@PathVariable String coruseCode,@PathVariable String lectureHeader) {
+        return courseService.getUpvotes(coruseCode,lectureHeader);
+    }
+    @GetMapping("/get/downvotes/{coruseCode}/{lectureHeader}")
+    public Integer getDownvotes(@PathVariable String coruseCode,@PathVariable String lectureHeader) {
+        return courseService.getDownvotes(coruseCode,lectureHeader);
+    }
+
+
     @DeleteMapping("/deleteall/")
     public String deleteAllCourses() {
         return courseService.deleteAllCourses();

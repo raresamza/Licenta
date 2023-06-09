@@ -35,4 +35,12 @@ public interface CourseService {
     List<SolutionDisplayData> getCourseSolutions(String coruseCode, String lectureHeader);
 
     String addTestsToCourse(AddTestDTO addTestDTO);
+
+    Integer upvote(VoteDTO voteDTO);
+
+    Integer downvote(VoteDTO voteDTO);
+
+    Integer getUpvotes(String coruseCode, String lectureHeader);
+
+    Integer getDownvotes(String coruseCode, String lectureHeader);
 }

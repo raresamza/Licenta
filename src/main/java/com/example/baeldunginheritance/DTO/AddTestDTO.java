@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddTestDTO {
-    String coruseCode;
-    String lectureHeader;
-    String testCode;
+    private String coruseCode;
+    private String lectureHeader;
+    private String testCode;
 }

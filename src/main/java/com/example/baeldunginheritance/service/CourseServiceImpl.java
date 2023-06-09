@@ -244,7 +244,109 @@ public class CourseServiceImpl implements CourseService {
         }
 
         courseRepository.save(course);
-        System.out.println(addTestDTO.getTestCode());
         return addTestDTO.getTestCode();
+    }
+
+    @Override
+    public Integer upvote(VoteDTO voteDTO) {
+        Course course = courseRepository.findByCourseCode(voteDTO.getCourseCode());
+        boolean lectureFlag = false;
+        Integer upvotes=0;
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(voteDTO.getLectureHeader())) {
+                    lectureFlag = true;
+                    if(!(l.getUpvoters().contains(voteDTO.getEmail()))) {
+                        if(l.getDownvoters().contains(voteDTO.getEmail())) {
+                            l.fixDownvote(voteDTO.getEmail());
+                        }
+                        l.upvote();
+                        l.addUpVoters(voteDTO.getEmail());
+                        upvotes=l.getUpvotes();
+                    } else {
+                        throw new IllegalStateException("User already voted");
+                    }
+
+                }
+            }
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+
+        courseRepository.save(course);
+        return upvotes;
+    }
+
+    @Override
+    public Integer downvote(VoteDTO voteDTO) {
+
+        Course course = courseRepository.findByCourseCode(voteDTO.getCourseCode());
+
+        boolean lectureFlag = false;
+        Integer dwonvotes=0;
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(voteDTO.getLectureHeader())) {
+
+                    lectureFlag = true;
+                    if(!(l.getDownvoters().contains(voteDTO.getEmail()))){
+                        if(l.getUpvoters().contains(voteDTO.getEmail())) {
+                            l.fixUpvote(voteDTO.getEmail());
+                        }
+                        l.downvote();
+                        dwonvotes=l.getUpvotes();
+                        l.addDownVoters(voteDTO.getEmail());
+                    } else {
+                        throw new IllegalStateException("This user already voted");
+                    }
+
+                }
+            }
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+
+        courseRepository.save(course);
+        return dwonvotes;
+    }
+
+    @Override
+    public Integer getUpvotes(String coruseCode, String lectureHeader) {
+        Course course = courseRepository.findByCourseCode(coruseCode);
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(lectureHeader)) {
+                    return l.getUpvotes();
+                }
+            }
+        }
+        throw new IllegalStateException("Lecture not found");
+    }
+
+    @Override
+    public Integer getDownvotes(String coruseCode, String lectureHeader) {
+        Course course = courseRepository.findByCourseCode(coruseCode);
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(lectureHeader)) {
+                    return l.getDownvotes();
+                }
+            }
+        }
+        throw new IllegalStateException("Lecture not found");
     }
 }
