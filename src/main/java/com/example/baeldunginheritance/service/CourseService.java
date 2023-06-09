@@ -33,4 +33,6 @@ public interface CourseService {
     SolutionDisplayData addSolutionToCourse(Solution solution);
 
     List<SolutionDisplayData> getCourseSolutions(String coruseCode, String lectureHeader);
+
+    String addTestsToCourse(AddTestDTO addTestDTO);
 }

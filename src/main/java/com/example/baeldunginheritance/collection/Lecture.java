@@ -19,7 +19,7 @@ public class Lecture {
     private String problemContent;
     private ArrayList<CommentDTO> comments=new ArrayList<>();
     private ArrayList<SolutionDTO> solutions=new ArrayList<>();
-//    private String test;
+    private String test;
 
 
     public void addComment(CommentDTO comment) {

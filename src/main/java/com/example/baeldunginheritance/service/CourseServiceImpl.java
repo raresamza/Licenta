@@ -223,4 +223,28 @@ public class CourseServiceImpl implements CourseService {
         return solutionList;
     }
 
+    @Override
+    public String addTestsToCourse(AddTestDTO addTestDTO) {
+        Course course = courseRepository.findByCourseCode(addTestDTO.getCoruseCode());
+        boolean lectureFlag = false;
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(addTestDTO.getLectureHeader())) {
+                    lectureFlag = true;
+                    l.setTest(addTestDTO.getTestCode());
+
+                }
+            }
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+
+        courseRepository.save(course);
+        System.out.println(addTestDTO.getTestCode());
+        return addTestDTO.getTestCode();
+    }
 }

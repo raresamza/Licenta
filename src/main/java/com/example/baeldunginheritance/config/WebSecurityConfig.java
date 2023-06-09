@@ -54,6 +54,7 @@ public class WebSecurityConfig {
             "/auth/**",
             "course/add/comment",
             "course/add/solution",
+            "course/add/tests",
             "course/comments/{coruseCode}/{lectureHeader}",
             "course/solutions/{coruseCode}/{lectureHeader}",
             "course/deleteall",

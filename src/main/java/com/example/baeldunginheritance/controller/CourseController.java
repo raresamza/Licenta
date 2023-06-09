@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/course")
 @CrossOrigin(origins = {"https://sssssss.herokuapp.com",
         "http://localhost:3000/",
+        "http://localhost:3000/*",
         "https://frotnend.vercel.app/",
         "http://localhost:3000/courses-tab/add",
         "https://frotnend.vercel.app/courses-tab/add",
@@ -98,6 +99,11 @@ public class CourseController {
     @GetMapping("/comments/{coruseCode}/{lectureHeader}")
     public List<CommentDisplayData> getCourseComments(@PathVariable String coruseCode, @PathVariable String lectureHeader) {
         return courseService.getCourseComments(coruseCode,lectureHeader);
+    }
+
+    @PutMapping("/add/tests")
+    public String addTestsToCourse(@RequestBody AddTestDTO addTestDTO) {
+        return courseService.addTestsToCourse(addTestDTO);
     }
 
     @DeleteMapping("/deleteall/")
