@@ -43,4 +43,10 @@ public interface CourseService {
     Integer getUpvotes(String coruseCode, String lectureHeader);
 
     Integer getDownvotes(String coruseCode, String lectureHeader);
+
+    List<String> addInputsToCourse(AddInputsDTO inputsDTO);
+
+    List<String> getLectureInputs(String courseCode, String lectureHeader);
+
+    String getLectureTests(String courseCode, String lectureHeader);
 }

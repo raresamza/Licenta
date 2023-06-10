@@ -285,7 +285,6 @@ public class CourseServiceImpl implements CourseService {
     public Integer downvote(VoteDTO voteDTO) {
 
         Course course = courseRepository.findByCourseCode(voteDTO.getCourseCode());
-
         boolean lectureFlag = false;
         Integer dwonvotes=0;
 
@@ -301,8 +300,8 @@ public class CourseServiceImpl implements CourseService {
                             l.fixUpvote(voteDTO.getEmail());
                         }
                         l.downvote();
-                        dwonvotes=l.getUpvotes();
                         l.addDownVoters(voteDTO.getEmail());
+                        dwonvotes=l.getDownvotes();
                     } else {
                         throw new IllegalStateException("This user already voted");
                     }
@@ -315,6 +314,7 @@ public class CourseServiceImpl implements CourseService {
         }
 
         courseRepository.save(course);
+
         return dwonvotes;
     }
 
@@ -344,6 +344,64 @@ public class CourseServiceImpl implements CourseService {
             for (Lecture l : course.getLectures()) {
                 if (l.getHeader().equals(lectureHeader)) {
                     return l.getDownvotes();
+                }
+            }
+        }
+        throw new IllegalStateException("Lecture not found");
+    }
+
+    @Override
+    public List<String> addInputsToCourse(AddInputsDTO inputsDTO) {
+        Course course = courseRepository.findByCourseCode(inputsDTO.getCoruseCode());
+        boolean lectureFlag = false;
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(inputsDTO.getLectureHeader())) {
+                    lectureFlag = true;
+                    l.setInputs(inputsDTO.getInputs());
+
+                }
+            }
+        }
+        if (!lectureFlag) {
+            throw new IllegalStateException("Lecture not found");
+        }
+
+        courseRepository.save(course);
+        return inputsDTO.getInputs();
+    }
+
+    @Override
+    public List<String> getLectureInputs(String courseCode, String lectureHeader) {
+        Course course = courseRepository.findByCourseCode(courseCode);
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(lectureHeader)) {
+                    return l.getInputs();
+
+                }
+            }
+        }
+        throw new IllegalStateException("Lecture not found");
+    }
+
+    @Override
+    public String getLectureTests(String courseCode, String lectureHeader) {
+        Course course = courseRepository.findByCourseCode(courseCode);
+
+        if (course == null) {
+            throw new IllegalStateException("course not found");
+        } else {
+            for (Lecture l : course.getLectures()) {
+                if (l.getHeader().equals(lectureHeader)) {
+                    return l.getTest();
+
                 }
             }
         }

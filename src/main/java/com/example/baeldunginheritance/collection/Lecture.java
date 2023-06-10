@@ -24,6 +24,7 @@ public class Lecture {
     private Integer downvotes=0;
     private ArrayList<String> upvoters=new ArrayList<>();
     private ArrayList<String> downvoters=new ArrayList<>();
+    private ArrayList<String> inputs=new ArrayList<>();
 
     public void addComment(CommentDTO comment) {
         this.comments.add(comment);

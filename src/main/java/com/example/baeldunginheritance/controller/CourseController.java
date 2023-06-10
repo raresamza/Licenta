@@ -106,6 +106,20 @@ public class CourseController {
         return courseService.addTestsToCourse(addTestDTO);
     }
 
+    @PutMapping("/add/inputs")
+    public List<String> addInputsToCourse(@RequestBody AddInputsDTO inputsDTO) {
+        return courseService.addInputsToCourse(inputsDTO);
+    }
+
+    @GetMapping("/get/inputs/{courseCode}/{lectureHeader}")
+    public List<String> getLectureInputs(@PathVariable String courseCode,@PathVariable String lectureHeader) {
+        return courseService.getLectureInputs(courseCode,lectureHeader);
+    }
+    @GetMapping("/get/tests/{courseCode}/{lectureHeader}")
+    public String getLectureTests(@PathVariable String courseCode,@PathVariable String lectureHeader) {
+        return courseService.getLectureTests(courseCode,lectureHeader);
+    }
+
     @PutMapping("/upvote")
     public Integer upvote(@RequestBody VoteDTO voteDTO) {
         return courseService.upvote(voteDTO);
@@ -113,7 +127,6 @@ public class CourseController {
 
     @PutMapping("/downvote")
     public Integer downvote(@RequestBody VoteDTO voteDTO) {
-        System.out.println(voteDTO.toString());
         return courseService.downvote(voteDTO);
     }
 
