@@ -238,4 +238,14 @@ public class UserServiceImpl implements UserService {
 
         return user.getPhotoURL();
     }
+
+    @Override
+    public boolean isUserActive(String email) {
+        return userRepository.findUserByEmail(email).isActiveQuiz();
+    }
+
+    @Override
+    public String getQuizCodeFromUser(String email) {
+        return userRepository.findUserByEmail(email).getEnrolledQuizCode();
+    }
 }

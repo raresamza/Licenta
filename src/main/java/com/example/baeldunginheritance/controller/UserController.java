@@ -123,6 +123,17 @@ public class UserController {
                 + httpServletRequest.getServerPort() + "/user/" + httpServletRequest.getContextPath();
     }
 
+    @GetMapping("/active/{email}")
+    public boolean isUserActive(@PathVariable String email) {
+        return userService.isUserActive(email);
+    }
+
+    @GetMapping("/quiz-code/{email}")
+    public String getQuizCodeFromUser(@PathVariable String email) {
+return userService.getQuizCodeFromUser(email);
+    }
+
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         userService.delete(id);

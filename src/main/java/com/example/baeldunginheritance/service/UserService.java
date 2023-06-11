@@ -47,4 +47,8 @@ public interface UserService {
     VerificationToken generateNewVerificationToken(String oldToken);
 
     String getPhotoURLByEmail(String email);
+
+    boolean isUserActive(String email);
+
+    String getQuizCodeFromUser(String email);
 }

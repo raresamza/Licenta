@@ -42,6 +42,9 @@ public class User implements UserDetails {
 
     private List<Course> courses;
 
+    private boolean activeQuiz=false;
+    private String enrolledQuizCode="";
+
 
     public User(String firstName, String lastName, String uniName, Integer age, Role role, String email, String password) {
         this.firstName = firstName;
