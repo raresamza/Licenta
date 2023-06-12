@@ -3,10 +3,13 @@ package com.example.baeldunginheritance.controller;
 import com.example.baeldunginheritance.DTO.AddQuizDto;
 import com.example.baeldunginheritance.DTO.AddQuizStudentsDTO;
 import com.example.baeldunginheritance.DTO.QuizProblemDTO;
+import com.example.baeldunginheritance.DTO.QuizProblemGetterDTO;
 import com.example.baeldunginheritance.collection.Quiz;
+import com.example.baeldunginheritance.collection.QuizProblem;
 import com.example.baeldunginheritance.service.QuizService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +21,8 @@ import java.util.List;
         "http://localhost:3000/*",
         "https://frotnend.vercel.app/",
         "https://frotnend.vercel.app/*",
+        "http://localhost:3000/quiz-page",
+        "http://localhost:3000/quiz-page/*",
         "http://localhost:3000/create-quiz"
 
 })
@@ -54,5 +59,11 @@ public class QuizController {
     public Quiz addProblem(@RequestBody QuizProblemDTO quizProblemDTO) {
         return quizService.addProblem(quizProblemDTO);
     }
+
+    @GetMapping("get/problem/{quizCode}/{quizProblemCode}")
+    public QuizProblem getProblem(@PathVariable String quizCode,@PathVariable String quizProblemCode) {
+        return quizService.getProblem(quizCode,quizProblemCode);
+    }
+
 
 }

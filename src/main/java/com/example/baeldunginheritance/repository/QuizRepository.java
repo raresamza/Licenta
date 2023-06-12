@@ -2,6 +2,7 @@ package com.example.baeldunginheritance.repository;
 
 import com.example.baeldunginheritance.collection.Course;
 import com.example.baeldunginheritance.collection.Quiz;
+import com.example.baeldunginheritance.collection.QuizProblem;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

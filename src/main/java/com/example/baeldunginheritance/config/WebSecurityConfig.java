@@ -43,6 +43,7 @@ public class WebSecurityConfig {
             "/quiz/add",
             "/quiz/get/{quizCode}",
             "/quiz/get",
+            "/quiz/get/problem/{quizCode}/{quizProblemCode}",
             "/quiz/add/students",
             "/quiz/add/problem",
             "/teacher",

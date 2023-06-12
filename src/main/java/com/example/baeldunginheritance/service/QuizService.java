@@ -3,7 +3,9 @@ package com.example.baeldunginheritance.service;
 import com.example.baeldunginheritance.DTO.AddQuizDto;
 import com.example.baeldunginheritance.DTO.AddQuizStudentsDTO;
 import com.example.baeldunginheritance.DTO.QuizProblemDTO;
+import com.example.baeldunginheritance.DTO.QuizProblemGetterDTO;
 import com.example.baeldunginheritance.collection.Quiz;
+import com.example.baeldunginheritance.collection.QuizProblem;
 
 import java.util.List;
 
@@ -19,4 +21,7 @@ public interface QuizService {
     Quiz addStudents(AddQuizStudentsDTO addQuizStudentsDTO);
 
     Quiz addProblem(QuizProblemDTO quizProblemDTO);
+
+
+    QuizProblem getProblem(String quizCode, String quizProblemCode);
 }
