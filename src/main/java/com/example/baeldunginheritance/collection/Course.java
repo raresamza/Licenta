@@ -42,16 +42,10 @@ public class Course {
     public String genCode() {
         StringBuilder buf = new StringBuilder();
         Random random = new Random();
+        String alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         for (int i = 0; i <= 10; i++) {
-            if(i==0 && (char)(random.nextInt(94) + 33)=='?') {
-                buf.append((char) (random.nextInt(94) + 32));
-            }
-            if((char)(random.nextInt(94) + 33)=='\\' || (char)(random.nextInt(94) + 33)=='/') {
-                buf.append((char) (random.nextInt(94) + 32));
-            } else {
-                buf.append((char) (random.nextInt(94) + 33));
-            }
+            buf.append(alphabet.charAt(random.nextInt(alphabet.length())));
         }
 
         return buf.toString();
