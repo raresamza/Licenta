@@ -19,9 +19,9 @@ import java.util.function.Function;
 public class JWTService {
 
     private static final String SECRET_KEY="743777217A25432A462D4A614E645267556B586E3272357538782F413F442847";
-    @Value("${application.security.jwt.expiration}")
+    @Value("864000000")
     private long jwtExpiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
+    @Value("${application.security.jwt.refresh-token.expiration}00")
     private long refreshExpiration;
 
     public String  extractEmail(String jwtToken) {

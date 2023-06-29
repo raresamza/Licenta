@@ -52,6 +52,7 @@ public class PasswordResetEventListener implements ApplicationListener<PasswordR
                 "<p>Hello, dear "+user.getFirstName()+" "+user.getLastName()+"\n</p> " +
                 "<p>This is your new activation link:\n</p> " +
                 url+" \n" +
+                "your password will bereset to <span style=\"color:red; font-weight: 700;\">123</span> upon clicking the link"+
                 "<p>Please click the link to activate the account in the span of <span style=\"color:red;\">10</span>" +
                 " minutes otherwise the link will be invalidated and a resubmission must be issued \n</p> " +
                 "<p style style=\"color:red;\"> In case you did not request this e-mail please ignore it! \n</p>" +

@@ -33,6 +33,7 @@ import java.util.UUID;
         "http://localhost:3000/courses-tab/*",
         "http://localhost:3000/*",
         "http://localhost:3000/user-profile",
+        "http://localhost:3000/user-profile/*",
         "https://frotnend.vercel.app/user-profile",
         "http://localhost:3000/change-email",
         "https://frotnend.vercel.app/change-email",
@@ -233,6 +234,11 @@ return userService.getQuizCodeFromUser(email);
         } else {
             return "Bad user";
         }
+    }
+
+    @PutMapping("/add/bio")
+    public String addBio(@RequestBody AddBioDTO addBioDTO )  {
+        return userService.addBio(addBioDTO);
     }
 
 

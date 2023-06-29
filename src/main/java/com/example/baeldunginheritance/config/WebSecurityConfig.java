@@ -23,6 +23,7 @@ public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST_URLS = {
             "/user",
+            "/user/add/bio",
             "/user/{email}",
             "/course/get-by-code/{courseCode}",
             "/course/get-by-code/**",
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
             "/course/add",
             "/user/add/course",
             "/course/add/lecture",
-            "/auth/authenticate",
+            /*"/auth/authenticate",*/
             "/user/student",
             "/user/register/student",
             "/user/register/studentP",
@@ -59,7 +60,7 @@ public class WebSecurityConfig {
             "/user/quiz-code/{email}",
             "164.90.185.151/user",
             "164.90.185.151/student",
-            "/auth/**",
+//            "/auth/**",
             "course/add/comment",
             "course/add/solution",
             "course/add/tests",
@@ -73,9 +74,10 @@ public class WebSecurityConfig {
             "course/comments/{coruseCode}/{lectureHeader}",
             "course/solutions/{coruseCode}/{lectureHeader}",
             "course/deleteall",
+//            "user/add/bio",
             "https://licenta-production.up.railway.app/user",
-            "http://localhost:8080/auth/authenticate",
-            "https://licenta-production.up.railway.app/auth/authenticate",
+//            "http://localhost:8080/auth/authenticate",
+//            "https://licenta-production.up.railway.app/auth/authenticate",
             "https://licenta-production.up.railway.app/user/student",
             "https://licenta-production.up.railway.app/user/register/teacher",
             "https://licenta-production.up.railway.app/user/register/teacherP",
@@ -102,7 +104,8 @@ public class WebSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers(WHITE_LIST_URLS).permitAll()
+                .requestMatchers("/auth/**","/auth/authenticate","/user/register/studentP","/user/register/teacherP","/user/savePassword").permitAll()
+                .requestMatchers(WHITE_LIST_URLS).authenticated()
                 .anyRequest()
                 .authenticated()
                 .and()

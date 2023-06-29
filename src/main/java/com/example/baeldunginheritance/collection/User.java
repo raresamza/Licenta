@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private String lastName;
     private String uniName;
     private Integer age;
+    private String bio="";
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
@@ -55,6 +56,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.courses=new ArrayList<>();
+        this.bio="";
     }
     public User(String firstName, String lastName, String uniName, Integer age, Role role, String email, String password,String photoURL) {
         this.firstName = firstName;
@@ -66,6 +68,7 @@ public class User implements UserDetails {
         this.password = password;
         this.photoURL=photoURL;
         this.courses=new ArrayList<>();
+        this.bio="";
     }
     public User(String firstName, String lastName, String uniName, Integer age, String email, String password) {
         this.firstName = firstName;
@@ -75,6 +78,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.courses=new ArrayList<>();
+        this.bio="";
     }
 
     public User(String firstName, String lastName, String uniName, Integer age, String email, String password,String photoURL) {
@@ -86,6 +90,7 @@ public class User implements UserDetails {
         this.password = password;
         this.photoURL=photoURL;
         this.courses=new ArrayList<>();
+        this.bio="";
     }
 
     public void addCourse(Course course) {

@@ -51,4 +51,6 @@ public interface UserService {
     boolean isUserActive(String email);
 
     String getQuizCodeFromUser(String email);
+
+    String addBio(AddBioDTO addBioDTO);
 }

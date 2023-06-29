@@ -248,4 +248,13 @@ public class UserServiceImpl implements UserService {
     public String getQuizCodeFromUser(String email) {
         return userRepository.findUserByEmail(email).getEnrolledQuizCode();
     }
+
+    @Override
+    public String addBio(AddBioDTO addBioDTO) {
+        User user= userRepository.findUserByEmail(addBioDTO.getEmail());
+        System.out.println(addBioDTO.getEmail());
+        user.setBio(addBioDTO.getBio());
+        userRepository.save(user);
+        return user.getBio();
+    }
 }

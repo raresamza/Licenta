@@ -33,6 +33,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         final String JWTToken;
         final String email;
         if(authHeader==null || !authHeader.startsWith("Bearer ")) {
+            if( authHeader==null) {
+                System.out.println("Why");
+            }
             System.out.println("auth header==nu;ll sau nu incepe cu Bearer+spatiu");
             filterChain.doFilter(request,response);
             return;
